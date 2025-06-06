@@ -8,7 +8,6 @@ use App\Http\Requests\RegistrationRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -34,7 +33,7 @@ class UserController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         try {
-            if (!$token = JWTAuth::attempt($request->validated())) {
+            if (! $token = JWTAuth::attempt($request->validated())) {
                 return response()->json([
                     'code' => 401,
                     'message' => 'Invalid credentials',
@@ -54,8 +53,6 @@ class UserController extends Controller
         }
     }
 
-
-
     public function logout(): JsonResponse
     {
         try {
@@ -63,12 +60,12 @@ class UserController extends Controller
 
             return response()->json([
                 'code' => 200,
-                'message' => 'Successfully logged out'
+                'message' => 'Successfully logged out',
             ]);
         } catch (JWTException $e) {
             return response()->json([
                 'code' => 500,
-                'message' => 'Failed to logout, please try again'
+                'message' => 'Failed to logout, please try again',
             ], 500);
         }
     }
