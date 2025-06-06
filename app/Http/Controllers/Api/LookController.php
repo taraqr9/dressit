@@ -50,7 +50,14 @@ class LookController extends Controller
     public function show($id): JsonResponse
     {
         try {
-            $look = Look::findOrFail($id);
+            $look = Look::find($id);
+
+            if (! $look) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Look not found',
+                ], 404);
+            }
 
             return response()->json([
                 'code' => 200,
@@ -65,9 +72,18 @@ class LookController extends Controller
         }
     }
 
-    public function update(LookUpdateRequest $request, Look $look): JsonResponse
+    public function update(LookUpdateRequest $request, $id): JsonResponse
     {
         try {
+            $look = Look::find($id);
+
+            if (! $look) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Look not found',
+                ], 404);
+            }
+
             $look->update($request->validated());
 
             return response()->json([
@@ -83,9 +99,18 @@ class LookController extends Controller
         }
     }
 
-    public function destroy(Look $look): JsonResponse
+    public function destroy($id): JsonResponse
     {
         try {
+            $look = Look::find($id);
+
+            if (! $look) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Look not found',
+                ], 404);
+            }
+
             $look->delete();
 
             return response()->json([
