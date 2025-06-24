@@ -8,6 +8,7 @@ use App\Http\Requests\RegistrationRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -66,6 +67,29 @@ class UserController extends Controller
             return response()->json([
                 'code' => 500,
                 'message' => 'Failed to logout, please try again',
+            ], 500);
+        }
+    }
+
+    public function profile(): JsonResponse
+    {
+        try {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Unauthenticated',
+                ], 401);
+            }
+
+            return response()->json([
+                'code' => 200,
+                'user' => $user,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch user',
+                'error' => $e->getMessage(),
             ], 500);
         }
     }

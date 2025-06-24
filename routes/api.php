@@ -12,5 +12,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::resource('looks', LookController::class);
     Route::resource('comments', CommentController::class)->only(['store', 'destroy']);
 
+    Route::get('/profile', [UserController::class, 'profile']);
     Route::get('/logout', [UserController::class, 'logout']);
 });
