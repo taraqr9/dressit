@@ -84,10 +84,12 @@ class UserController extends Controller
 
             return response()->json([
                 'code' => 200,
+                'valid' => true,
                 'user' => $user,
             ]);
         } catch (Exception $e) {
             return response()->json([
+                'valid' => false,
                 'message' => 'Failed to fetch user',
                 'error' => $e->getMessage(),
             ], 500);
